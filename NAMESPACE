@@ -1,0 +1,2 @@
+useDynLib(poilog)
+export(dpoilog,dbipoilog,rpoilog,rbipoilog,bipoilogMLE,poilogMLE)
