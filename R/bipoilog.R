@@ -1,3 +1,7 @@
+#'@useDynLib poilogcpp
+#'@import Rcpp
+NULL
+
 
 rbipoilog <- function(S,mu1,mu2,sig1,sig2,rho,nu1=1,nu2=1,condS=FALSE,keep0=FALSE){
    
@@ -76,7 +80,7 @@ rpoilog <- function(S,mu,sig,nu=1,condS=FALSE,keep0=FALSE){
    return(simVec)
 }
 
-
+#' @export
 dbipoilog <- function(n1,n2,mu1,mu2,sig1,sig2,rho){
   
   if (length(n1)!=length(n2)) stop('n1 and n2 have unequal length')
@@ -90,18 +94,18 @@ dbipoilog <- function(n1,n2,mu1,mu2,sig1,sig2,rho){
   if (-1>rho | rho>1) stop('rho must be in the range -1 to 1')
   if (sig1<0 | sig2<=0) stop('sig1 and/or sig2 is not larger than 0')
   
- .C('poilog2',n1=as.integer(n1),n2=as.integer(n2),mu1=as.double(mu1),mu2=as.double(mu2),
-    sig1=as.double(sig1^2),sig2=as.double(sig2^2),rho=as.double(rho),nrN=as.integer(length(n1)),
-    val=double(length(n1)))$val
+ poilog2(x=as.integer(n1), y=as.integer(n2), my1=as.double(mu1), my2=as.double(mu2),
+    sig1=as.double(sig1^2), sig2=as.double(sig2^2), rho=as.double(rho), nrN=as.integer(length(n1)))
 }
 
+#' @export
 dpoilog <- function(n,mu,sig){
  if (length(mu)>1 | length(sig)>1) stop('vectorization of mu and sig is currently not implemented') 
  if (any((n[n!=0]/trunc(n[n!=0]))!=1)) stop('all n must be integers')
  if (any(n<0)) stop('one or several values of n are negative')
  if (!all(is.finite(c(mu,sig)))) stop('all parameters should be finite')
  if (sig<=0) stop('sig is not larger than 0')
- .C('poilog1',n=as.integer(n),mu=as.double(mu),sig2=as.double(sig^2),nrN=as.integer(length(n)),val=double(length(n)))$val
+ poilog1(x=as.integer(n),my=as.double(mu),sig=as.double(sig^2),nrN=as.integer(length(n)))
 }
 
 poilogMLE <- function(n,startVals=c(mu=1,sig=2),nboot=0,zTrunc=TRUE,

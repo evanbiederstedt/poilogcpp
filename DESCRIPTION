@@ -1,14 +1,14 @@
-Package: poilog_cpp
-Type: Package
+Package: poilogcpp
 Title: Poisson lognormal and bivariate Poisson lognormal distribution
 Version: 0.1.0
-Imports: RcppNumerical 
-LinkingTo: Rcpp, RcppEigen, RcppNumerical
-Author: Vidar Grøtan and Steinar Engen
-Maintainer: Vidar Grøtan <vidar.grotan@bio.ntnu.no>
+Depends: R (>= 3.5.0)
 Description: Functions for obtaining the density, random deviates 
              and maximum likelihood estimates of the Poisson lognormal 
              distribution and the bivariate Poisson lognormal distribution.
 License: GPL-3
-Encoding: latin1
-Packaged: Tue Apr 29 16:02:57 2008; vidargr
+Encoding: UTF-8
+NeedsCompilation: yes
+LinkingTo: Rcpp, RcppEigen
+Author: Viktor Petukhov [aut], Nikolas Barkas [aut], Peter Kharchenko [aut], Weiliang Qiu [ctb], Evan Biederstedt [aut, cre]
+Maintainer: Evan Biederstedt <evan.biederstedt@gmail.com>
+RoxygenNote: 7.1.2
