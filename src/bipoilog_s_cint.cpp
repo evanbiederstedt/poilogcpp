@@ -14,8 +14,8 @@ double my_f(double z, int x, double my, double sig, double fac);
 double my_f2(double z,int y,int x,double my1,double my2,double sig1,double sig2,double ro,double fac);
 void my_f_vec(double *z, int n, void *p);
 void my_f2_vec(double *z, int n, void *p);
-NumericVector poilog2(NumericVector x, NumericVector y, double my1, double my2, double sig1, double sig2, double ro, int nrN, NumericVector val);
-NumericVector poilog1(NumericVector x, double my, double sig, int nrN, NumericVector val);
+NumericVector poilog2(NumericVector x, NumericVector y, double my1, double my2, double sig1, double sig2, double ro, int nrN);
+NumericVector poilog1(NumericVector x, double my, double sig, int nrN);
 
 struct My_fparams { 
    int x; 
@@ -57,8 +57,6 @@ NumericVector poilog1(NumericVector x, double my, double sig, int nrN){
 }
 
 
-
-
 double maxf(int x, double my, double sig){
    double d,z;
    z=0;
@@ -92,7 +90,6 @@ double upper(int x, double m, double my, double sig){
 }
 
 
-
 double lower(int x, double m, double my, double sig) {
    double d,z,mf;
    mf = (x-1)*m-exp(m)-0.5/sig*((m-my)*(m-my));
@@ -119,6 +116,7 @@ double my_f2(double z,int y,int x,double my1,double my2,double sig1,double sig2,
    return( poilog(y,my2+ro*sqrt(sig2/sig1)*(z-my1),sig2*(1-ro*ro)) *
        exp(x*z-exp(z)-fac-0.5/sig1*(z-my1)*(z-my1)) );
 }
+
 
 void my_f_vec(double *z, int n, void *p){
    struct My_fparams *params = (struct My_fparams *)p;
@@ -150,7 +148,6 @@ void my_f2_vec(double *z, int n, void *p){
 }
 
 
-
 double poilog(int x, double my, double sig) {
    double a, b, m, fac, val;
    double result, abserr;
@@ -173,8 +170,6 @@ double poilog(int x, double my, double sig) {
    Rdqags(my_f_vec, (void *) &p, &a, &b,
       &abstol,&reltol,&result,&abserr,&neval,&ier,
       &limit,&lenw, &last, iwork, work);
-
-
 
    if (ier!=0) {
       Rcpp::stop("error in integration\n");
@@ -220,60 +215,4 @@ double bipoilog(int x, int y, double my1, double my2, double sig1, double sig2, 
 
    return(val);
 }
-
-/*
-
-
-
-
-*/
-
-
-
-/*
-class Poilog1: public Func
-{
-private:
-   int x;
-   double my;
-   double sig;
-   int nrN;
-   double val;
-
-public:
-   void Poilog1(int x, double my, double sig, int nrN, double val){
-      for (int i = 0; i < nrN; i++){
-         val[i] = poilog(x[i],my,sig);
-         Rcpp::checkUserInterrupt();
-      }
-   }
-
-};
-
-
-class Poilog2: public Func
-{
-private:
-   int x;
-   int y;
-   double my1;
-   double my2;
-   double sig1;
-   double sig2;
-   double ro;
-   int nrN;
-   double val;
-
-public:
-   void Poilog2(int x, int y, double my1, double my2, double sig1, double sig2, double ro, int nrN, double val){
-      for (i = 0; i < *nrN; i++){
-         val[i] = bipoilog(x[i],y[i],*my1,*my2,*sig1,*sig2,*ro);
-         Rcpp::checkUserInterrupt();
-      }
-   }
-
-};
-
-
-*/
 

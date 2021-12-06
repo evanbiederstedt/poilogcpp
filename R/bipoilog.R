@@ -2,82 +2,82 @@
 #'@import Rcpp
 NULL
 
-
+#' @export
 rbipoilog <- function(S,mu1,mu2,sig1,sig2,rho,nu1=1,nu2=1,condS=FALSE,keep0=FALSE){
-   
-   sim <- function(nr){
-     lamx <- rnorm(nr)
-     lamy <- rho*lamx+sqrt(1-rho^2)*rnorm(nr)
-     x <- rpois(nr,exp(sig1*lamx+mu1+log(nu1)))
-     y <- rpois(nr,exp(sig2*lamy+mu2+log(nu2)))
-     sel <- x+y 
-     xy <- cbind(x,y)
-     if (keep0) xy <- cbind(x,y) else xy <- cbind(x[sel>0],y[sel>0])
-     return(xy)
-   }
+  
+  sim <- function(nr){
+    lamx <- rnorm(nr)
+    lamy <- rho*lamx+sqrt(1-rho^2)*rnorm(nr)
+    x <- rpois(nr,exp(sig1*lamx+mu1+log(nu1)))
+    y <- rpois(nr,exp(sig2*lamy+mu2+log(nu2)))
+    sel <- x+y 
+    xy <- cbind(x,y)
+    if (keep0) xy <- cbind(x,y) else xy <- cbind(x[sel>0],y[sel>0])
+    return(xy)
+  }
   
    
-   if (S<1) stop('S is not positive')
-   if (!is.finite(S)) stop('S is not finite')
-   if ((S/trunc(S))!=1) stop('S is not an integer')
-   if (sig1<0) stop('sig1 is not positive')
-   if (sig2<0) stop('sig2 is not positive')
-   if (nu1<0)    stop('nu1 is not positive')
-   if (nu2<0)    stop('nu2 is not positive')
-   if (-1>rho | rho>1) stop('rho must be in the range -1 to 1')
-   if (!is.logical(keep0)) stop('keep0 should be TRUE or FALSE')
-   if (length(c(mu1,mu2,sig1,sig2,rho,nu1,nu2))>7) stop('duplicate values of some parameters')
+  if (S<1) stop('S is not positive')
+  if (!is.finite(S)) stop('S is not finite')
+  if ((S/trunc(S))!=1) stop('S is not an integer')
+  if (sig1<0) stop('sig1 is not positive')
+  if (sig2<0) stop('sig2 is not positive')
+  if (nu1<0)    stop('nu1 is not positive')
+  if (nu2<0)    stop('nu2 is not positive')
+  if (-1>rho | rho>1) stop('rho must be in the range -1 to 1')
+  if (!is.logical(keep0)) stop('keep0 should be TRUE or FALSE')
+  if (length(c(mu1,mu2,sig1,sig2,rho,nu1,nu2))>7) stop('duplicate values of some parameters')
    
-   if (condS){
-     simMat <- matrix(NA,0,2)
-     fac <- 2
-     nr  <- S
-     while (nrow(simMat)<S){
-       simvals <- sim(nr*fac)
-       simMat  <- rbind(simMat,simvals)
-       fac     <- (1/(nrow(simvals)/(nr*fac)))*2
-       fac     <- ifelse(is.finite(fac),fac,1000)
-       nr      <- S-nrow(simvals)
-     }
-     simMat <- simMat[1:S,]
-   }
+  if (condS){
+    simMat <- matrix(NA,0,2)
+    fac <- 2
+    nr  <- S
+    while (nrow(simMat)<S){
+      simvals <- sim(nr*fac)
+      simMat  <- rbind(simMat,simvals)
+      fac     <- (1/(nrow(simvals)/(nr*fac)))*2
+      fac     <- ifelse(is.finite(fac),fac,1000)
+      nr      <- S-nrow(simvals)
+    }
+    simMat <- simMat[1:S,]
+  }
    
-   else simMat <- sim(S)
-   return(simMat)
+  else simMat <- sim(S)
+  return(simMat)
 }
 
-   
+#' @export  
 rpoilog <- function(S,mu,sig,nu=1,condS=FALSE,keep0=FALSE){
    
-   sim <- function(nr){
-     lamx <- rnorm(nr)
-     x <- rpois(nr,exp(sig*lamx+mu+log(nu)))
-     if (!keep0) x <- x[x>0]
-     return(x)
-   }
+  sim <- function(nr){
+    lamx <- rnorm(nr)
+    x <- rpois(nr,exp(sig*lamx+mu+log(nu)))
+    if (!keep0) x <- x[x>0]
+    return(x)
+  }
    
-   if (S<1) stop('S is not positive')
-   if (!is.finite(S)) stop('S is not finite')
-   if ((S/trunc(S))!=1) stop('S is not an integer')
-   if (sig<0) stop('sig is not positive')
-   if (nu<0)    stop('nu is not positive')
+  if (S<1) stop('S is not positive')
+  if (!is.finite(S)) stop('S is not finite')
+  if ((S/trunc(S))!=1) stop('S is not an integer')
+  if (sig<0) stop('sig is not positive')
+  if (nu<0)    stop('nu is not positive')
    
-   if (condS){
-     simVec <- vector('numeric',0)
-     fac <- 2
-     nr  <- S
-     while (length(simVec)<S){
-       simvals <- sim(nr*fac)
-       simVec  <- c(simVec,simvals)
-       fac     <- (1/(length(simvals)/(nr*fac)))*2
-       fac     <- ifelse(is.finite(fac),fac,1000)
-       nr      <- S-length(simvals)
-     }
-     simVec <- simVec[1:S]
-   }
+  if (condS){
+    simVec <- vector('numeric',0)
+    fac <- 2
+    nr  <- S
+    while (length(simVec)<S){
+      simvals <- sim(nr*fac)
+      simVec  <- c(simVec,simvals)
+      fac     <- (1/(length(simvals)/(nr*fac)))*2
+      fac     <- ifelse(is.finite(fac),fac,1000)
+      nr      <- S-length(simvals)
+    }
+    simVec <- simVec[1:S]
+  }
    
-   else simVec <- sim(S)
-   return(simVec)
+  else simVec <- sim(S)
+  return(simVec)
 }
 
 #' @export
@@ -94,20 +94,21 @@ dbipoilog <- function(n1,n2,mu1,mu2,sig1,sig2,rho){
   if (-1>rho | rho>1) stop('rho must be in the range -1 to 1')
   if (sig1<0 | sig2<=0) stop('sig1 and/or sig2 is not larger than 0')
   
- poilog2(x=as.integer(n1), y=as.integer(n2), my1=as.double(mu1), my2=as.double(mu2),
+  poilog2(x=as.integer(n1), y=as.integer(n2), my1=as.double(mu1), my2=as.double(mu2),
     sig1=as.double(sig1^2), sig2=as.double(sig2^2), ro=as.double(rho), nrN=as.integer(length(n1)))
 }
 
 #' @export
 dpoilog <- function(n,mu,sig){
- if (length(mu)>1 | length(sig)>1) stop('vectorization of mu and sig is currently not implemented') 
- if (any((n[n!=0]/trunc(n[n!=0]))!=1)) stop('all n must be integers')
- if (any(n<0)) stop('one or several values of n are negative')
- if (!all(is.finite(c(mu,sig)))) stop('all parameters should be finite')
- if (sig<=0) stop('sig is not larger than 0')
- poilog1(x=as.integer(n), my=as.double(mu), sig=as.double(sig^2), nrN=as.integer(length(n)))
+  if (length(mu)>1 | length(sig)>1) stop('vectorization of mu and sig is currently not implemented') 
+  if (any((n[n!=0]/trunc(n[n!=0]))!=1)) stop('all n must be integers')
+  if (any(n<0)) stop('one or several values of n are negative')
+  if (!all(is.finite(c(mu,sig)))) stop('all parameters should be finite')
+  if (sig<=0) stop('sig is not larger than 0')
+  poilog1(x=as.integer(n), my=as.double(mu), sig=as.double(sig^2), nrN=as.integer(length(n)))
 }
 
+#' @export
 poilogMLE <- function(n,startVals=c(mu=1,sig=2),nboot=0,zTrunc=TRUE,
                      method='BFGS',control=list(maxit=1000)){
   
@@ -168,12 +169,10 @@ poilogMLE <- function(n,startVals=c(mu=1,sig=2),nboot=0,zTrunc=TRUE,
 }
 
 
-
+#' @export
 bipoilogMLE <- function(n1,n2=NULL,startVals=c(mu1=1,mu2=1,sig1=2,sig2=2,rho=0.5),
                        nboot=0,zTrunc=TRUE,file=NULL,
                        method='BFGS',control=list(maxit=1000)){
-  
-  
   if (is.null(n2)){
     if (!is.matrix(n1) & !is.data.frame(n1)) {stop('n2 is missing and n1 is not a matrix or data frame') }
     if (ncol(n1)!=2) stop('n1 should have 2 columns when n2 is not given')
@@ -189,13 +188,13 @@ bipoilogMLE <- function(n1,n2=NULL,startVals=c(mu1=1,mu2=1,sig1=2,sig2=2,rho=0.5
   if (z[4]<=0) stop('start value of sig2 is not larger than 0')
   if (-1>z[5] | z[5]>1) stop('start value of rho must be in the range -1 to 1')
   
-  invRhoTrans <- function(w){
+  invRhoTrans <- function(w) {
      rho <- (1-exp(-1*w))/(1+exp(-1*w))
      if (rho>0.9999) rho <- 0.9999
      if (rho<(-0.9999)) rho <- -0.9999
      return(rho)
   } 
-  rhoTrans    <- function(rho) 1*log((1+rho)/(1-rho))
+  rhoTrans <- function(rho) 1*log((1+rho)/(1-rho))
   
   z[3:4] <- log(z[3:4])
   z[5]   <- rhoTrans(z[5])
