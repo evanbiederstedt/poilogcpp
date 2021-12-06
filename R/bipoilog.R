@@ -95,7 +95,7 @@ dbipoilog <- function(n1,n2,mu1,mu2,sig1,sig2,rho){
   if (sig1<0 | sig2<=0) stop('sig1 and/or sig2 is not larger than 0')
   
  poilog2(x=as.integer(n1), y=as.integer(n2), my1=as.double(mu1), my2=as.double(mu2),
-    sig1=as.double(sig1^2), sig2=as.double(sig2^2), rho=as.double(rho), nrN=as.integer(length(n1)))
+    sig1=as.double(sig1^2), sig2=as.double(sig2^2), ro=as.double(rho), nrN=as.integer(length(n1)))
 }
 
 #' @export
@@ -105,7 +105,7 @@ dpoilog <- function(n,mu,sig){
  if (any(n<0)) stop('one or several values of n are negative')
  if (!all(is.finite(c(mu,sig)))) stop('all parameters should be finite')
  if (sig<=0) stop('sig is not larger than 0')
- poilog1(x=as.integer(n),my=as.double(mu),sig=as.double(sig^2),nrN=as.integer(length(n)))
+ poilog1(x=as.integer(n), my=as.double(mu), sig=as.double(sig^2), nrN=as.integer(length(n)))
 }
 
 poilogMLE <- function(n,startVals=c(mu=1,sig=2),nboot=0,zTrunc=TRUE,

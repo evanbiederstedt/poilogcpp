@@ -8,7 +8,5 @@ Description: Functions for obtaining the density, random deviates
 License: GPL-3
 Encoding: UTF-8
 NeedsCompilation: yes
-LinkingTo: Rcpp, RcppEigen
-Author: Viktor Petukhov [aut], Nikolas Barkas [aut], Peter Kharchenko [aut], Weiliang Qiu [ctb], Evan Biederstedt [aut, cre]
-Maintainer: Evan Biederstedt <evan.biederstedt@gmail.com>
+LinkingTo: Rcpp
 RoxygenNote: 7.1.2

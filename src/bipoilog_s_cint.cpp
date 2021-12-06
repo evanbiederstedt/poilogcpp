@@ -1,5 +1,4 @@
 
-#include <RcppEigen.h>
 #include <Rcpp.h>
 #include <R_ext/Applic.h>
 
