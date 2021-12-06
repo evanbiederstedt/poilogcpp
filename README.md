@@ -24,7 +24,6 @@ rpoilog(S=50,mu=2,sig=1)
 rpoilog(S=50,mu=2,sig=1,keep0=TRUE)
 
 ## etc...
-
 ```
 
 Citation for the original `poilog` is here:
