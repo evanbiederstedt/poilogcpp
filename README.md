@@ -1,12 +1,15 @@
 # poilogcpp
 
-`poilog` written use C++ and Rcpp
+`poilog` written to use C++ and Rcpp
 
 Souce code for the original `poilog` [here](https://github.com/cran/poilog) and CRAN link [here](https://cran.r-project.org/web/packages/poilog/index.html).
 
 
 * The package `poilog` was originally written with C and the R API for C
 * This package `poilogcpp` converts the C code to C++, and uses Rcpp.
+
+
+The original source code had no roxygen2 documentation, so I didn't add them here. For reference, please check the documentation on [CRAN](https://cran.r-project.org/web/packages/poilog/poilog.pdf) and [rdrr.io: R Package Documentation](https://rdrr.io/cran/poilog/)
 
 
 The examples work from https://rdrr.io/cran/poilog/
